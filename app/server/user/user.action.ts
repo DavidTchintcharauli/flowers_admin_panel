@@ -1,17 +1,17 @@
 "use server";
 
-import { createClient } from "../../../utils/supabase/server";
+import { createClient } from "../../utils/supabase/server";
 
 export async function getUserRoleServer() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
-  const { data: user, error } = await (await supabase).auth.getUser();
-  if (!user || error) return "guest";
+  const { data, error } = await supabase.auth.getUser();
+  if (!data?.user || error) return "guest";
 
-  const { data: roleData } = await (await supabase)
+  const { data: roleData } = await supabase
     .from("roles")
     .select("role")
-    .eq("id", user.user.id)
+    .eq("id", data.user.id)
     .single();
 
   return roleData?.role ?? "user";

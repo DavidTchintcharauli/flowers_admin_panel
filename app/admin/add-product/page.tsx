@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { addProduct } from "../../server/product/addProduct";
 import { createClient  } from "../../utils/supabase/client";
+import BackButton from "@/app/components/BackButton";
 
 const supabase = createClient();
 
@@ -67,6 +68,7 @@ export default function AddProductPage() {
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+      <BackButton />
       <h2 className="text-2xl font-semibold mb-4">➕ დაამატე პროდუქტი</h2>
       {message && <p className="mb-4 text-red-500">{message}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">

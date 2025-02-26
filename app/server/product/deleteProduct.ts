@@ -14,6 +14,5 @@ export async function deleteProduct(productId: string) {
     console.error("პროდუქტის წაშლის შეცდომა:", error.message);
     return { error: "პროდუქტის წაშლის შეცდომა: " + error.message };
   }
-//tt
   return { success: "✅ პროდუქტი წარმატებით წაიშალა!" };
 }

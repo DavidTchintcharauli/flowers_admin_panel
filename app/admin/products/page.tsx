@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Pencil, Trash2 } from "lucide-react";
 import { deleteProduct } from "../../server/product/deleteProduct";
+import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 
 type Product = {
   image_url: string;
@@ -18,6 +19,7 @@ type Product = {
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,18 +31,18 @@ export default function AdminProductsPage() {
     fetchProducts();
   }, []);
 
-  const handleDelete = async (productId: string) => {
-    const confirmDelete = confirm("დარწმუნებული ხარ, რომ გინდა ამ პროდუქტის წაშლა?");
-    if (!confirmDelete) return;
-
-    const response = await deleteProduct(productId);
+  const handleDeleteConfirm = async () => {
+    if (!deleteProductId) return;
+    
+    const response = await deleteProduct(deleteProductId);
     
     if (response.error) {
       alert(`❌ შეცდომა: ${response.error}`);
     } else {
-      alert("✅ პროდუქტი წარმატებით წაიშალა!");
-      setProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
+      setProducts((prevProducts) => prevProducts.filter((product) => product.id !== deleteProductId));
     }
+
+    setDeleteProductId(null);
   };
 
   return (
@@ -53,6 +55,7 @@ export default function AdminProductsPage() {
           </button>
         </Link>
       </div>
+
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg p-4">
         <table className="w-full border border-gray-300 rounded-lg">
           <thead className="bg-gray-100">
@@ -101,7 +104,7 @@ export default function AdminProductsPage() {
                         <Pencil className="text-blue-500 hover:text-blue-700 cursor-pointer" size={20} />
                       </Link>
                       <button
-                        onClick={() => handleDelete(product.id)}
+                        onClick={() => setDeleteProductId(product.id)}
                         className="text-red-500 hover:text-red-700"
                       >
                         <Trash2 size={20} />
@@ -120,6 +123,13 @@ export default function AdminProductsPage() {
           </tbody>
         </table>
       </div>
+      <ConfirmDeleteModal
+        isOpen={!!deleteProductId}
+        onClose={() => setDeleteProductId(null)}
+        onConfirm={handleDeleteConfirm}
+        title="პროდუქტის წაშლა"
+        message="დარწმუნებული ხარ, რომ გინდა წაშალო ეს პროდუქტი?"
+      />
     </div>
   );
 }

@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { InfoIcon } from "lucide-react";
-import { useRole } from "../context/RoleContext"; // ⬅️ Context-დან როლის მიღება
+import { useRole } from "../context/RoleContext";
 
 export default function ProtectedPage() {
-  const role = useRole(); // ⬅️ "role" წამოგვაქვს Context-იდან
+  const role = useRole();
 
   return (
     <div className="flex-1 w-full flex flex-col gap-12">

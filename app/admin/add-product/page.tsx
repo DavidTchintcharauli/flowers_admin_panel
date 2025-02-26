@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { addProductAction } from "../../server/product/product.actions";
+import { addProduct } from "../../server/product/addProduct";
 import { createClient  } from "../../utils/supabase/client";
 
 const supabase = createClient();
@@ -51,7 +51,7 @@ export default function AddProductPage() {
       return setMessage("❌ ფოტოს ატვირთვა აუცილებელია!");
     }
 
-    const response = await addProductAction(name, description, parseFloat(price), imageUrl);
+    const response = await addProduct(name, description, parseFloat(price), imageUrl);
 
     if (response.error) {
       setMessage(`❌ შეცდომა: ${response.error}`);
@@ -94,7 +94,6 @@ export default function AddProductPage() {
           required
         />
 
-        {/* ფოტოს ატვირთვა */}
         <div className="flex flex-col items-center gap-3">
           <label className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             📷 აირჩიე ფოტო

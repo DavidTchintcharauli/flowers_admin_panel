@@ -34,7 +34,6 @@ export default async function RootLayout({
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
-        <BackButton />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -48,6 +47,7 @@ export default async function RootLayout({
                 <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
                   <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
                     <div className="flex gap-5 items-center font-semibold">
+                    <BackButton />
                       <Link href={"/"}>Admin Panel</Link>
                       <div>🚀 შენი როლი: {role}</div>
                     </div>
